@@ -18,9 +18,9 @@ class ODEsolver(Sequential):
     
     def train_step(self, data):
         batch_size = tf.shape(data)[0]
-        i = tf.random.uniform((batch_size, 1), minval=-1, maxval=1)
+        x = tf.random.uniform((batch_size, 1), minval=-1, maxval=1)
         with tf.GradientTape() as tape:
-            x = self(i, training=True)
+            y_pred = self(x, training=True)
             eq = 3*tf.math.sin(x*pi)
             loss = keras.losses.mean_squared_error(x, eq) 
         grads =  tape.gradient(loss, self.trainable_variables)
