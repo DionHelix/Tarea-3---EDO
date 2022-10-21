@@ -21,8 +21,8 @@ class ODEsolver(Sequential):
         x = tf.random.uniform((batch_size, 1), minval=-1, maxval=1)
         with tf.GradientTape() as tape:
             y_pred = self(x, training=True)
-            eq = 3*tf.math.sin(x*pi)
-            loss = keras.losses.mean_squared_error(x, eq) 
+            eq = y_pred - 3*tf.math.sin(x*pi)
+            loss = keras.losses.mean_squared_error(0, eq) 
         grads =  tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
         self.loss_tracker.update_state(loss)
