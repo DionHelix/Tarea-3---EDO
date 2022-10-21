@@ -50,10 +50,10 @@ model.add(Dense(1, activation='linear'))
 model.summary()
 
 model.compile(optimizer=Adam(), metrics=['loss'])
-x=tf.linspace(-5, 5, 100)
+x=tf.linspace(-5, 5, 1000)
 history = model.fit(x, epochs=500, verbose = 1)
 
-x_testv = tf.linspace(-5, 5, 100)
+x_testv = tf.linspace(-5, 5, 1000)
 a=model.predict(x_testv)
 plt.plot(x_testv, a)
 plt.plot(x_testv, -1+np.cos(x)+x*np.sin(x))
