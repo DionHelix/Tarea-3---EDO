@@ -45,6 +45,8 @@ model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
+model.add(Dense(10, activation='tanh'))
+model.add(Dense(10, activation='tanh'))
 model.add(Dense(1, activation='linear'))
 
 model.summary()
