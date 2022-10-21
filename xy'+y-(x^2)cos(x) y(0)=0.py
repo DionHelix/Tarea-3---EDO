@@ -29,7 +29,7 @@ class ODEsolver(Sequential):
             dy2 = tape2.gradient(dy, x)    
             x_0 = tf.zeros((batch_size), 1)
             y_0 = self(x_0, training=True)
-            eq = x*dy + y_pred - np.cos(x)*x**2
+            eq = x*dy + y_pred - tf.math.cos(x)*x**2
             ic = y_0
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0., ic)
             
