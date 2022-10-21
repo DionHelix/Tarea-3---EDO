@@ -27,11 +27,17 @@ class ODEsolver(Sequential):
                     y_pred = self(x, training=True)
                     y_0 = self(x_0, training=True)
                 dy = tape3.gradient(y_pred, x)
-                y_0 = self(y_pred, x_0)
+                dy_0 = tape3.gradient(y_0, x_0)
             dy2 = tape2.gradient(dy, x)    
+            print('Forma de x: ', x)
+            print('Forma de x_0: ', x_0)
+            print('Forma de y_pred: ', y_pred)
+            print('Forma de y_0: ', y_0)
+            print('Forma de dy: ', dy)
+            print('Forma de dy_0: ', dy_0)
             eq = dy2 + y_pred
             ic = y_0 - 1
-            ic_prima = y_0 + 0.5
+            ic_prima = dy_0 + 0.5
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0., ic) + keras.losses.mean_squared_error(0., ic_prima)
             
         grads =  tape.gradient(loss, self.trainable_variables)
