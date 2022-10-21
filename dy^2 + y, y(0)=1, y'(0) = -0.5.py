@@ -47,7 +47,7 @@ class ODEsolver(Sequential):
 
 model = ODEsolver()
 
-model.add(Dense(10, activation='tanh', input_shape=(1,)))
+model.add(Dense(10, activation='tanh', input_shape=(1,))) 
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
