@@ -20,7 +20,6 @@ class ODEsolver(Sequential):
         batch_size = tf.shape(data)[0]
         i = tf.random.uniform((batch_size, 1), minval=-1, maxval=1)
         with tf.GradientTape() as tape:
-            tape.watch(i)
             x = self(i, training=True)
             eq = 3*tf.math.sin(x*pi)
             loss = keras.losses.mean_squared_error(x, eq) 
