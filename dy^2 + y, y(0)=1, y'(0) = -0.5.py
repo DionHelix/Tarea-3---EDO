@@ -24,6 +24,7 @@ class ODEsolver(Sequential):
                 tape2.watch(x)
                 with tf.GradientTape(persistent=True) as tape3:
                     tape3.watch(x)
+                    tape3.watch(x_0)
                     y_pred = self(x, training=True)
                     y_0 = self(x_0, training=True)
                 dy = tape3.gradient(y_pred, x)
