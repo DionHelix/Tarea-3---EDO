@@ -18,21 +18,20 @@ class ODEsolver(Sequential):
     def train_step(self, data):
         batch_size = tf.shape(data)[0]
         x = tf.random.uniform((batch_size, 1), minval=-5, maxval=5)
-        
+        x_0 = tf.zeros((batch_size, 1))
         with tf.GradientTape() as tape:
             with tf.GradientTape() as tape2:
                 tape2.watch(x)
-                with tf.GradientTape() as tape3:
+                with tf.GradientTape(persistent=True) as tape3:
                     tape3.watch(x)
-                    y_pred = self(x, training=True)    
+                    y_pred = self(x, training=True)
+                    y_0 = self(x_0, training=True)
                 dy = tape3.gradient(y_pred, x)
+                y_0 = self(y_pred, x_0)
             dy2 = tape2.gradient(dy, x)    
-            x_0 = tf.zeros((batch_size), 1)
-            y_0 = self(x_0, training=True)
-            y_0_prima = self(x_0, training=True)
             eq = dy2 + y_pred
             ic = y_0 - 1
-            ic_prima = y_0_prima + 0.5
+            ic_prima = y_0 + 0.5
             loss = keras.losses.mean_squared_error(0., eq) + keras.losses.mean_squared_error(0., ic) + keras.losses.mean_squared_error(0., ic_prima)
             
         grads =  tape.gradient(loss, self.trainable_variables)
@@ -42,7 +41,7 @@ class ODEsolver(Sequential):
 
 model = ODEsolver()
 
-model.add(Dense(10, activation='sigmoid', input_shape=(1,)))
+model.add(Dense(10, activation='tanh', input_shape=(1,)))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
 model.add(Dense(10, activation='tanh'))
@@ -51,9 +50,9 @@ model.add(Dense(1, activation='linear'))
 
 model.summary()
 
-model.compile(optimizer=Adam(), metrics=['loss'])
+model.compile(optimizer=RMSprop(), metrics=['loss'])
 x=tf.linspace(-5, 5, 100)
-history = model.fit(x, epochs=500, verbose = 1)
+history = model.fit(x, epochs=50, verbose = 1)
 
 x_testv = tf.linspace(-5, 5, 100)
 a=model.predict(x_testv)
